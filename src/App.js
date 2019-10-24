@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react';
+import Scores from './components/scores';
+import "bootstrap/dist/css/bootstrap.min.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+class App extends Component {
+    render() {
+        if(this.state.loading){
+            return <div>Loading...</div>
+        }
+
+        if (!this.state.gameInfo.length) {
+          return <div>No games</div>
+        }
+        return (
+          <div className="container-fluid mt-5">
+            {this.state.gameInfo.map(game =>(
+              <div className="row mt-1" key={game.gameSchedule.gameId}>
+                <div className="col-6 offset-3 text-center">{game.gameSchedule.visitorNickname} vs {game.gameSchedule.homeNickname}</div>
+              </div>
+            ))}
+          </div>
+        )
+    }
+
+    state = {
+        loading: null,
+        gameInfo: []
+    };
+
+    async componentDidMount() {
+        const url = "https://feeds.nfl.com/feeds-rs/scores.json";
+        const response = await fetch(url);
+        const data = await response.json();
+        this.setState({
+          gameInfo: data.gameScores,
+          loading: false
+        });
+
+        console.log(data.gameScores);
+    }
 }
 
 export default App;
