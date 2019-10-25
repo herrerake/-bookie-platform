@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.teamLabel {
+  min-width: 86px;
+  text-align: left;
+}
