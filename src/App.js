@@ -1,7 +1,18 @@
 import React, {Component} from 'react';
-import Scores from './components/scores';
+import PicksForm from './components/PicksForm';
+import NFLWeek from './components/NFLWeek';
 import "bootstrap/dist/css/bootstrap.min.css";
 
+class NFLWeekFormContainer extends Component {
+  render(){
+    return(
+      <div className="container-fluid my-5">
+        <NFLWeek nflWeekData={this.props.nflData}/>
+        <PicksForm nflWeekData={this.props.nflData}/>
+      </div>
+    )
+  }
+}
 
 class App extends Component {
     render() {
@@ -12,34 +23,9 @@ class App extends Component {
         if (!this.state.gameInfo.length) {
           return <div>No games</div>
         }
+
         return (
-          <div className="container-fluid mt-5">
-            <div className="text-center"><h1>Week {this.state.week}</h1></div>
-            {this.state.gameInfo.map(game =>(
-                <div className="card" key={game.gameSchedule.gameId}>
-                <div className="card-body">
-                  <h5 className="card-title">{game.gameSchedule.visitorDisplayName} at {game.gameSchedule.homeDisplayName}</h5>
-                  <div>{game.gameSchedule.gameDate}</div>
-                  <div>Kickoff - {game.gameSchedule.gameTimeEastern} EST</div>
-                  <form className="mt-3">
-                    <h6>My Pick</h6>
-                    <div className="form-check">
-                        <label className="teamLabel">
-                            <input type="radio" name="react-tips" value="option1" checked={true} className="form-check-input"/>
-                            {game.gameSchedule.homeNickname}
-                        </label>
-                      </div>
-                      <div className="form-check">
-                        <label className="teamLabel" >
-                            <input type="radio" name="react-tips" value="option2" className="form-check-input"/>
-                            {game.gameSchedule.visitorNickname}
-                        </label>
-                      </div>
-                  </form>
-                </div>
-              </div>
-            ))}
-          </div>
+          <NFLWeekFormContainer nflData={this.state} />
         )
     }
 
